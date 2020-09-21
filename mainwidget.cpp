@@ -114,13 +114,7 @@ void MainWidget::paintGL()
         if(depth != 1.0f)
         {
             QMatrix4x4 resMtr = projection_ * view_;
-#if 0
-            QVector3D res = resMtr.inverted() * vec;
-            tileTransformer_->clickOnTile(res, resMtr);
-            qDebug()<<res;
-#else
             tileTransformer_->clickOnTile(vec, resMtr);
-#endif
             update();
         }
     }
