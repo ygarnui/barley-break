@@ -19,34 +19,43 @@ MainWidget::~MainWidget()
 
 void MainWidget::mouseMoveEvent(QMouseEvent *e)
 {
-    QVector2D diff = QVector2D(e->localPos()) - mousePressPosition_;
+    if(e->buttons() == Qt::RightButton)
+    {
+        QVector2D diff = QVector2D(e->localPos()) - mousePressPosition_;
 
-    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
+        QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
 
-    rotationAxis_ = (rotationAxis_ + n).normalized();
+        rotationAxis_ = (rotationAxis_ + n).normalized();
 
-    rotation = QQuaternion::fromAxisAndAngle(rotationAxis_, 1) * rotation;
+        rotation = QQuaternion::fromAxisAndAngle(rotationAxis_, 1) * rotation;
 
-    view_.setToIdentity();
-    view_.translate(0,0,-25);
-    view_.rotate(rotation);
+        view_.setToIdentity();
+        view_.translate(0,0,-25);
+        view_.rotate(rotation);
 
-    mousePressPosition_ = QVector2D(e->localPos());
+        mousePressPosition_ = QVector2D(e->localPos());
 
-    update();
+        update();
+    }
 }
 
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
-    mouseRelease = false;
-    mousePressPosition_ = QVector2D(e->localPos());
+    if(e->buttons() == Qt::LeftButton || e->buttons() == Qt::RightButton)
+    {
+        mouseRelease = false;
+        mousePressPosition_ = QVector2D(e->localPos());
+    }
 }
 
 void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    mousePressPosition_ = QVector2D(e->localPos());
-    mouseRelease = true;
-    update();
+    if(e->button() == Qt::LeftButton)
+    {
+        mousePressPosition_ = QVector2D(e->localPos());
+        mouseRelease = true;
+        update();
+    }
 }
 
 void MainWidget::initializeGL()
