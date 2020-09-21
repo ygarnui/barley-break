@@ -10,7 +10,7 @@
 #include <QMatrix4x4>
 #include <QQuaternion>
 #include <QVector2D>
-#include <QBasicTimer>
+#include <QMouseEvent>
 
 class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
